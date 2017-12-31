@@ -70,8 +70,6 @@ def coin_status(event):
 def lambda_handler(event, context):
     logger.info(event)
     try:
-        os.environ["access_token"] = event['session']['user']['accessToken']
-
         intent = event['request']['intent']['name']
         if intent == 'PostMessage':
             return ez_alexa('I am working.', 'Test')
