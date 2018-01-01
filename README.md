@@ -6,9 +6,9 @@ This skill lets you send discord messages with Alexa.
 
 ## Phrases
 
-- Alexa, ask Discord to post a test message to channel general
-- Alexa, ask Discord to post a test message to channel general
-- Alexa, ask Discord to post a test message to channel general
+- Alexa, ask Discord to say Hello World
+- Alexa, ask Discord to post a test message
+- Alexa, ask Discord to send a colorful message
 
 # Skill Information
 
@@ -16,7 +16,7 @@ Information used when submitting the Skill.
 
 ## Testing Instructions
 
-Connect your discord account ask ask Alexa to post a message to a channel.
+Connect your discord account ask ask Alexa to post a message.
 
 ## Short Skill Description
 
@@ -28,4 +28,4 @@ Post messages to Discord from Alexa.
 
 ## Keywords
 
-Alexa Discord, Discord, alexa-discord
+Alexa,Discord,Discord,alexa-discord

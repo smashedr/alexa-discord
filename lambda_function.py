@@ -1,6 +1,6 @@
-import os
-import requests
+import json
 import logging
+import requests
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -52,15 +52,31 @@ def ez_alexa(msg, title):
     return alexa
 
 
-def coin_status(event):
+def send_discord_msg(msg, token):
+    # url = 'https://slack.com/api/chat.postMessage'
+    # data = {
+    #     'token': token,
+    #     'channel': channel,
+    #     'text': msg,
+    #     'as_user': True,
+    # }
+    # r = requests.post(url, data)
+    # return r.json()
+    return True
+
+
+def post_message(event):
     try:
-        value = event['request']['intent']['slots']['currency']['value']
-        value = value.lower().replace('define', '').strip()
-        value = value.lower().replace('lookup', '').strip()
-        value = value.lower().replace('look up', '').strip()
-        value = value.lower().replace('search', '').strip()
-        value = value.lower().replace('find', '').strip()
-        logger.info('value: {}'.format(value))
+        term = event['request']['intent']['slots']['term']['value'].strip()
+        term = term.lstrip('say')
+        term = term.lstrip('post')
+        term = term.lstrip('send')
+        logger.info('term: {}'.format(term))
+        access_token = event['session']['user']['accessToken']
+        logger.info('access_token: {}'.format(access_token))
+        s = send_discord_msg(term, access_token)
+        logger.info(s)
+        return ez_alexa('This is working.', 'Error')
 
     except Exception as error:
         logger.exception(error)
@@ -72,9 +88,7 @@ def lambda_handler(event, context):
     try:
         intent = event['request']['intent']['name']
         if intent == 'PostMessage':
-            return ez_alexa('I am working.', 'Test')
-        elif intent == 'CoinStatus':
-            return coin_status(event)
+            return post_message(event)
         else:
             raise ValueError('Unknown Intent')
     except Exception as error:
