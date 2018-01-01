@@ -53,16 +53,12 @@ def ez_alexa(msg, title):
 
 
 def send_discord_msg(msg, token):
-    # url = 'https://slack.com/api/chat.postMessage'
-    # data = {
-    #     'token': token,
-    #     'channel': channel,
-    #     'text': msg,
-    #     'as_user': True,
-    # }
-    # r = requests.post(url, data)
-    # return r.json()
-    return True
+    tl = token.split(' ')
+    url = 'https://discordapp.com/api/webhooks/{}/{}'.format(tl[0], tl[1])
+    logging.info(url)
+    data = {'content': msg}
+    r = requests.post(url, data)
+    return r
 
 
 def post_message(event):
@@ -74,9 +70,12 @@ def post_message(event):
         logger.info('term: {}'.format(term))
         access_token = event['session']['user']['accessToken']
         logger.info('access_token: {}'.format(access_token))
-        s = send_discord_msg(term, access_token)
-        logger.info(s)
-        return ez_alexa('This is working.', 'Error')
+        r = send_discord_msg(term, access_token)
+        if r.status_code == 200:
+            return ez_alexa('Your message has been sent to Discord.', 'Sent')
+        else:
+            error = 'Error communicating with Discord API, please try again.'
+            return alexa_error(error)
 
     except Exception as error:
         logger.exception(error)
